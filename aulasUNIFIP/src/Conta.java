@@ -19,7 +19,7 @@
         private static int identificador; /* esse atribudo usa static, ou seja, ele é estatico durante toda a classe, independente do objeto
         com isso, podemos criar um identificador, que sera apenas alterado quando criarmos uma nova conta (quando o construtor for usado)
        */
-
+        private int numero;
         Cliente cliente = new Cliente();
         private double saldo;
 
@@ -36,6 +36,7 @@
         public Conta(Cliente cliente){
             this.cliente = cliente;
             identificador++; // identificador adiciona +1 para a sequencia
+            this.numero = identificador;
             this.saldo = 0;
         }
 
