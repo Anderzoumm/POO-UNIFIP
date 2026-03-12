@@ -1,7 +1,9 @@
 class Teste {
     public static void main(String [] args) {
-        int x = 4;
-        System.out.println(x);
+        String java = "java";
+        String teste = String.format ("%10s", java );
+        System.out.println(teste);
+        System.out.println("Agora vai");
         }
     }
 
