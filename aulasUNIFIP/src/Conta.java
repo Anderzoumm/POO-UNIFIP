@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Date;
+
     public class Conta {
     /*
     Esse classe foi criada na primeira aula de Classes e instancias de POO 24/02/2026
@@ -22,8 +25,8 @@
         private int numero;
         Cliente cliente = new Cliente();
         private double saldo;
-
-
+        public static ArrayList<Conta> contas = new ArrayList<>();
+        public ArrayList<Transacao> transacoes;
 
         // CONSTRUTOR
 
@@ -33,11 +36,14 @@
         dessa forma, nunca existirá uma conta que nao seja vinculada com um cliente;
          */
 
-        public Conta(Cliente cliente){
+        public Conta(Cliente cliente, double saldo){
+            contas.add(this);
+            this.saldo = saldo;
             this.cliente = cliente;
             identificador++; // identificador adiciona +1 para a sequencia
             this.numero = identificador;
-            this.saldo = 0;
+            this.saldo = saldo;
+            this.transacoes = new ArrayList<>();
         }
 
 
@@ -49,6 +55,7 @@
         public boolean sacar(double valor) {
             if (valor <= saldo) {
                 saldo -= valor;
+                transacoes.add(new Transacao("Saque",valor,new Date(), ""));
                 return true;
             }
             return false;
@@ -57,6 +64,7 @@
         public boolean deposito(double valor) {
             if (valor > 0) {
                 saldo += valor;
+                transacoes.add(new Transacao("Deposito",valor,new Date(), ""));
                 return true;
             }
             return false;
@@ -65,11 +73,39 @@
         public boolean tranferir(Conta destino, double valor) {
             if (this.sacar(valor)) {
                 destino.deposito(valor);
+                transacoes.add(new Transacao("Tranferencia",valor,new Date(), "Anderson Tranferiu para Wesley"));
                 return true;
             }
             return false;
         }
 
+
+        public String getResumo() {
+
+            String resultado = "";
+
+            resultado += "================= RESUMO DA CONTA =================\n";
+            resultado += "Conta: " + numero + "\n";
+            resultado += "Cliente: " + cliente.getNome() + "\n";
+            resultado += "Saldo atual: R$" + saldo;
+
+            resultado += "\n------------------ TRANSAÇÕES ---------------------\n\n";
+            resultado += "  Tipo            Valor        Data           Detalhe\n";
+            resultado += "-----------------------------------------------------\n";
+
+            for (Transacao t : transacoes) {
+                resultado += String.format("%-15s R$ %-10s %-15s %-30s\n",
+                        t.getTipo(),
+                        t.getValor(),
+                        t.getDataFormatada(),
+                        t.getDetalhes()
+                );
+            }
+
+            resultado += "\n==================================================\n";
+
+            return resultado;
+        }
 
         public double getSaldo(){
             return this.saldo;
